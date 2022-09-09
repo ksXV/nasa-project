@@ -2,10 +2,11 @@
   "name": "nasa-project-api",
   "version": "1.0.0",
   "description": "NASA Mission Control Api",
-  "main": "src/server.ts",
+  "main": "src/server.mjs",
   "scripts": {
-    "watch": "nodemon -x node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/server.ts",
-    "build": "tsc"
+    "watch": "nodemon -x node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/server.mts",
+    "build": "tsc",
+    "start":"node dist/server.mjs"
   },
   "type": "module",
   "keywords": [],

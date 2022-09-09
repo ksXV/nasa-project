@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse";
 
-import { __dirname } from "../app";
+import { __dirname } from "../app.mjs";
 
 interface iKeplarPlanets {
   kepid: string;
@@ -25,9 +25,7 @@ function isHabitablePlanet(planet: iKeplarPlanets) {
 
 export function loadPlanetsData() {
   return new Promise((resolve, reject) => {
-    fs.createReadStream(
-      path.join(__dirname, "..", "data", "kepler_data.csv")
-    )
+    fs.createReadStream(path.join(__dirname, "..", "data", "kepler_data.csv"))
       .pipe(
         parse({
           comment: "#",
@@ -50,4 +48,6 @@ export function loadPlanetsData() {
   });
 }
 
-export default plantes;
+export function getAllPlanets(): Array<iKeplarPlanets> {
+  return plantes;
+}

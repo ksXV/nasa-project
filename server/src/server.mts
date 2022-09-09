@@ -1,8 +1,8 @@
 import http from "http";
 
-import app from "./app";
+import app from "./app.mjs";
 
-import { loadPlanetsData } from "./models/planets.model";
+import { loadPlanetsData } from "./models/planets.model.mjs";
 
 const PORT = process.env.PORT || 8000;
 
