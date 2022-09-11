@@ -12,7 +12,8 @@
     "install-server":"npm install --prefix server",
     "install-client":"npm install --prefix client",
     "install":"npm run install-server && npm run install-client",
-    "deploy":"tsc --project server && npm run build --prefix client && npm start --prefix server"
+    "deploy":"tsc --project server && npm run build --prefix client && npm start --prefix server",
+    "deploy-cluster":"tsc --project server && npm run build --prefix client && npm run cluster --prefix server"
   },
   "keywords": [],
   "author": "",
