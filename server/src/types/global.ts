@@ -6,7 +6,7 @@ export interface ILaunchReqBody<DateType> {
 }
 export interface ILaunch extends ILaunchReqBody<Date> {
   flightNumber: number;
-  customer: string[];
+  customers: string[];
   upcoming: boolean;
   success: boolean;
 }

@@ -1,49 +1,69 @@
-import { ILaunch, ILaunchReqBody } from "../types/global";
+import { ILaunchReqBody } from "../types/global";
 
-let latestFlightNumber = 100;
+import * as launches from "./launches.mongo.mjs";
+import * as plantes from "./plantes.mongo.mjs";
 
-const launches: Map<number, ILaunch> = new Map();
+const DEFAULT_FLIGHT_NUMBER = 100;
 
-const launch: ILaunch = {
-  flightNumber: 100,
-  mission: "Kepler Exploration",
-  rocket: "Explorer IS1",
-  launchDate: new Date("December 27,2030"),
-  target: "Kepler-442 b",
-  customer: ["ZTM", "NASA"],
-  upcoming: true,
-  success: true,
-};
-
-export function addNewLaunch(launch: ILaunchReqBody<string | Date>) {
-  latestFlightNumber++;
-  launches.set(latestFlightNumber, createLaunchObject(launch));
+async function validatePlanet(planetName: string) {
+  return await plantes.default.findOne({
+    keplerName: planetName,
+  });
 }
 
-export function existsLaunchWithId(launchId: number) {
-  return launches.has(launchId);
-}
+async function getLatestFlightNumber() {
+  const latestFlightNumber = await launches.default
+    .findOne()
+    .sort("-flightNumber");
 
-export function abortLaunchById(launchId: number) {
-  const aborted = launches.get(launchId);
-  if (aborted) {
-    aborted.upcoming = false;
-    aborted.success = false;
-    return aborted;
+  if (!latestFlightNumber) {
+    return DEFAULT_FLIGHT_NUMBER;
   }
+
+  return latestFlightNumber.flightNumber;
 }
 
-function createLaunchObject(launchObj: ILaunchReqBody<string | Date>): ILaunch {
-  return Object.assign(launchObj, {
-    flightNumber: latestFlightNumber,
-    customer: ["ZTM", "NASA"],
-    upcoming: true,
-    success: true,
-  }) as unknown as ILaunch;
+export async function scheduleNewLaunch(launch: ILaunchReqBody<Date>) {
+  if (!(await validatePlanet(launch.target))) {
+    throw new Error("No matching planet was found.");
+  }
+
+  const newflightNumber = (await getLatestFlightNumber()) + 1;
+
+  const launchDocument = await launches.default.create({
+    ...launch,
+    flightNumber: newflightNumber,
+    customers: ["ZTM", "NASA"],
+  });
+  await launchDocument.save();
 }
 
-launches.set(launch.flightNumber, launch);
+export async function existsLaunchWithId(launchId: number) {
+  return await launches.default.findOne({
+    flightNumber: launchId,
+  });
+}
 
-export function getAllLaunches(): Array<ILaunch> {
-  return Array.from(launches.values());
+export async function abortLaunchById(launchId: number) {
+  const aborted = await launches.default.findOneAndUpdate(
+    {
+      flightNumber: launchId,
+    },
+    {
+      upcoming: false,
+      success: false,
+    }
+  );
+
+  return aborted;
+}
+
+export async function getAllLaunches() {
+  return await launches.default.find(
+    {},
+    {
+      _id: 0,
+      __v: 0,
+    }
+  );
 }
