@@ -4,16 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch":"npm run server",
+    "watch": "npm run server",
     "start": "npm run client & npm run server",
-    "client" :"npm start --prefix client",
+    "client": "npm start --prefix client",
     "server": "npm run watch --prefix server",
     "test": "npm run test --prefix client && npm run test --prefix server",
-    "install-server":"npm install --prefix server",
-    "install-client":"npm install --prefix client",
-    "install":"npm run install-server && npm run install-client",
-    "deploy":"tsc --project server && npm run build --prefix client && npm start --prefix server",
-    "deploy-cluster":"tsc --project server && npm run build --prefix client && npm run cluster --prefix server"
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "install": "npm run install-server && npm run install-client",
+    "deploy": "tsc --project server && npm run build --prefix client && npm start --prefix server",
+    "deploy-cluster": "tsc --project server && npm run build --prefix client && npm run cluster --prefix server"
   },
   "keywords": [],
   "author": "",

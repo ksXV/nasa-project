@@ -22,7 +22,6 @@ const launchesSchema = new Schema<ILaunch>({
   customers: [String],
   target: {
     type: String,
-    required: true,
   },
   upcoming: {
     type: Boolean,

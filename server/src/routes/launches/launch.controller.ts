@@ -5,16 +5,22 @@ import {
   scheduleNewLaunch,
   existsLaunchWithId,
   abortLaunchById,
-} from "../../models/launches.model.mjs";
+} from "../../models/launches.model";
+import { getPagination } from "../../services/query";
 
 import { ILaunchReqBody } from "../../types/global";
 
-export async function httpGetAllLaunches(req: Request, res: Response) {
-  return res.status(200).json(await getAllLaunches());
+export async function httpGetAllLaunches(
+  req: Request<null, null, null, { page: string; limit: string }>,
+  res: Response
+) {
+  const { skip, limit } = getPagination(req.query);
+  const launches = await getAllLaunches(skip, limit);
+  return res.status(200).json(launches);
 }
 
 export async function httpAddNewLaunch(
-  req: Request<{}, {}, ILaunchReqBody<Date>>,
+  req: Request<null, null, ILaunchReqBody<Date>>,
   res: Response
 ) {
   const launch = req.body;
@@ -38,8 +44,8 @@ export async function httpAddNewLaunch(
     });
   }
 
-  await scheduleNewLaunch(launch);
-  return res.status(201).json(launch);
+  const result = await scheduleNewLaunch(launch);
+  return res.status(201).json(result);
 }
 export async function httpAbortLaunch(
   req: Request<{ id: string }>,
@@ -48,12 +54,15 @@ export async function httpAbortLaunch(
   const { id } = req.params;
   const launchId = Number(id);
 
-  if (!existsLaunchWithId(launchId))
+  if (!(await existsLaunchWithId(launchId)))
     return res.status(404).json({
       error: "Launch not found.",
     });
 
   const aborted = await abortLaunchById(launchId);
 
+  if (!aborted) {
+    return res.status(400).json({ error: "Launch not aborted." });
+  }
   return res.status(200).json(aborted);
 }

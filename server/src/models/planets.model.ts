@@ -1,9 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse";
-import * as plantes from "./plantes.mongo.mjs";
 
-import { __dirname } from "../app.mjs";
+import * as plantes from "./plantes.mongo";
+
+import { __dirname } from "../app";
 
 interface iKeplarPlanets {
   kepid: string;

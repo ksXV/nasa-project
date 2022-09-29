@@ -21,7 +21,7 @@ const App = () => {
           <Router>
             <AppLayout show={anim.entered} />
           </Router>
-        )}
+		 )}
       </Arwes>
     </SoundsProvider>
   </ThemeProvider>;
