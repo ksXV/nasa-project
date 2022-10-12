@@ -64,7 +64,7 @@ describe("Launching API", () => {
     expect(response.statusCode).toBe(400);
     expect(response.headers["content-type"]).toMatch(/json/);
     expect(response.body).toStrictEqual({
-      error: "Missing required launch properties",
+      error: "Missing required launch properties.",
     });
   });
 
