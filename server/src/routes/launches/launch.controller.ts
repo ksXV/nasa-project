@@ -43,9 +43,12 @@ export async function httpAddNewLaunch(
       error: "Invalid launch date",
     });
   }
-
-  const result = await scheduleNewLaunch(launch);
-  return res.status(201).json(result);
+  try {
+    const result = await scheduleNewLaunch(launch);
+    return res.status(201).json(result);
+  } catch (err) {
+    return res.status(404).json({ error: "Matching planet not found!" });
+  }
 }
 export async function httpAbortLaunch(
   req: Request<{ id: string }>,

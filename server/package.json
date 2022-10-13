@@ -12,8 +12,12 @@
     "cluster": "pm2 start dist/server.js -i max",
     "lint": "eslint . --ext .ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "node",
+    "mongo-db",
+    "typescript"
+  ],
+  "author": "ksxv",
   "license": "ISC",
   "dependencies": {
     "@babel/preset-env": "^7.19.3",
