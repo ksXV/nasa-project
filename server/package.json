@@ -1,13 +1,13 @@
 {
   "name": "nasa-project-api",
+  "description": "The NASA Mission Control API, written in TypeScript.",
   "version": "1.0.0",
-  "description": "NASA Mission Control Api",
-  "main": "src/index.ts",
+  "main": "src/server.ts",
   "type": "module",
   "scripts": {
     "build": "tsc",
     "watch": "nodemon -x node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/server.ts",
-    "start": "node --es-module-specifier-resolution=node ./dist/server.js",
+    "start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node ./dist/server.js",
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
     "cluster": "pm2 start dist/server.js -i max",
     "lint": "eslint . --ext .ts"
@@ -34,13 +34,13 @@
     "morgan": "^1.10.0",
     "pm2": "^5.2.0",
     "ts-jest": "^29.0.3",
-    "ts-node": "^10.9.1"
-  },
-  "devDependencies": {
+    "ts-node": "^10.9.1",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^29.0.3",
-    "@types/morgan": "^1.9.3",
+    "@types/morgan": "^1.9.3"
+  },
+  "devDependencies": {
     "eslint": "^8.24.0",
     "jest": "^29.0.3",
     "nodemon": "^2.0.20",
